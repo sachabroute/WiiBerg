@@ -1,0 +1,24 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class NewBehaviourScript : MonoBehaviour {
+
+	public Canvas StartCanvas;
+	public Canvas First;
+
+	void Awake(){
+		First.enabled = false;
+	}
+
+	public void FirstOn(){
+		First.enabled = true;
+		StartCanvas.enabled = false;
+	}
+
+	public void ReturnOn(){
+		First.enabled = false;
+		StartCanvas.enabled = true;
+	}
+}
