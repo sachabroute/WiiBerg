@@ -13,8 +13,7 @@ public class NewBehaviourScript : MonoBehaviour {
 	}
 
 	public void FirstOn(){
-		First.enabled = true;
-		StartCanvas.enabled = false;
+		Application.LoadLevel ("Second");
 	}
 
 	public void ReturnOn(){
