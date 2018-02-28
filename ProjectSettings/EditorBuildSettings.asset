@@ -8,6 +8,27 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Start.unity
     guid: 638e8b3c220b94aa38776c0eb870a014
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/Second.unity
-    guid: c80a5f928b6eb49538634d86ba67dc6a
+    path: Assets/Scenes/StandingUnsupported.unity
+    guid: 0434ddc5cf0664d5db871b3c9fd2dbf9
+  - enabled: 1
+    path: Assets/Scenes/SitToStand.unity
+    guid: 62d20592b3a2342e79b22276dd40985e
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/SitToStand2.unity
+    guid: 2afcd3d0210674cff9b36cf713cbb181
+  - enabled: 1
+    path: Assets/Scenes/PickUpObject.unity
+    guid: e5f02ca3c4ef74b3fb6e825cbed24d09
+  - enabled: 1
+    path: Assets/Scenes/StandingUnsupported2.unity
+    guid: b34532f10f8c34010b4a6bb511c80670
+  - enabled: 1
+    path: Assets/Scenes/PickUpObject2.unity
+    guid: a8028228901914a6dac2a01c67e40a36
