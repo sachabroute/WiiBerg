@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WiimoteLib;
+using InTheHand.Net.Sockets;
+using InTheHand.Net.Bluetooth;
 
 namespace Wii_to_TCP
 {
@@ -17,15 +19,15 @@ namespace Wii_to_TCP
         static Wiimote wm;
         static Wiimote wbb;
 
+        // we put initial values here so that it doesn't send an empty dictionary to unity
         static IDictionary<String, String> wbb_info = new Dictionary<String, String>
-                {
-                    {"bl" ,  "0.0" }, { "br" , "0.0" }, {"tl" , "0.0" }, {"tr" , "0.0"}, {"cogX", "0.0" }, {"cogY", "0.0" }, {"weight", "0.0" }, {"button", "false" }
-                };
-
+            {
+                {"button", "false" }
+            };
         static IDictionary<String, String> wm_info = new Dictionary<String, String>
-                {
-                    {"accX" ,  "0.0" }, { "accY" , "0.0" }, {"accZ" , "0.0" }, {"buttonA" , "0.0"}, {"buttonB", "0.0" }
-                };
+            {
+                {"buttonA", "false" }
+            };
 
         static WiiEchoServer echoServer;
         static int port = 50000;
@@ -35,7 +37,14 @@ namespace Wii_to_TCP
         {
             echoServer = new WiiEchoServer(serverIP, port);
             echoServer.StartServer();
-            echoServer.ConnectClient();
+            try
+            {
+                echoServer.ConnectClient();
+            } catch(Exception ex)
+            {
+                Console.WriteLine("Can't make server, could the port or IP address be already used? " + ex);
+                Quit();
+            }
 
             ConnectWiiDevices();
 
@@ -48,6 +57,7 @@ namespace Wii_to_TCP
         static void EchoWiiInfo()
         {
             echoServer.Log("Sending Wii Info....");
+            Console.WriteLine("Sending Wii Info....");
 
             string inputLine = "";
             while (inputLine != null)
@@ -69,10 +79,12 @@ namespace Wii_to_TCP
                 try
                 {
                     echoServer.WriteWiiInfo(inputLine);
+                    Console.WriteLine(inputLine);
                 }
                 catch (Exception) { break; }
             }
             echoServer.Log("Server was disconnect from client.");
+            Console.WriteLine("Server was disconnect from client.");
         }
 
         static void ConnectWiiDevices()
@@ -84,6 +96,7 @@ namespace Wii_to_TCP
             } catch (Exception ex)
             {
                 echoServer.Log("Error: " + ex.Message);
+                Console.WriteLine("Error: " + ex.Message);
                 Quit();
             }
 
@@ -97,16 +110,19 @@ namespace Wii_to_TCP
             catch (WiimoteNotFoundException ex)
             {
                 echoServer.Log("Wiimote not found error " + ex.Message);
+                Console.WriteLine("Wiimote not found error " + ex.Message);
                 Quit();
             }
             catch (WiimoteException ex)
             {
                 echoServer.Log("Wiimote error" + ex.Message);
+                Console.WriteLine("Wiimote error" + ex.Message);
                 Quit();
             }
             catch (Exception ex)
             {
                 echoServer.Log("Unknown error" + ex.Message);
+                Console.WriteLine("Unknown error" + ex.Message);
                 Quit();
             }
 
@@ -120,6 +136,7 @@ namespace Wii_to_TCP
                 if (wiim.WiimoteState.ExtensionType == ExtensionType.None)
                 {
                     echoServer.Log("Connected WiiMote");
+                    Console.WriteLine("Connected WiiMote");
                     wiim.SetReportType(InputReport.IRExtensionAccel, IRSensitivity.Maximum, true);
                     wm = wiim;
                     wm.SetLEDs(true,false,false,false);
@@ -127,6 +144,7 @@ namespace Wii_to_TCP
                 else if (wiim.WiimoteState.ExtensionType == ExtensionType.BalanceBoard)
                 {
                     echoServer.Log("Connected WBB");
+                    Console.WriteLine("Connected WBB");
                     wbb = wiim;
                     wbb.SetLEDs(true, true, false, false);
                 }
@@ -168,11 +186,158 @@ namespace Wii_to_TCP
             }
         }
 
+        public static void WiiDeviceSearch(WiiEchoServer echoServer)
+        {
+            try
+            {
+                quickConnect();
+
+                echoServer.Log("Devices already found and connected, skipping the pairing process");
+                Console.WriteLine("Devices already found and connected, skipping the pairing process");
+                return;
+            }
+            catch (Exception)
+            {
+                echoServer.Log("Devices not found, starting pairing process");
+                Console.WriteLine("Devices not found, starting pairing process");
+            }
+
+            using (var btClient = new BluetoothClient())
+            {
+                // PROBLEM:
+                // false false true: finds only unknown devices, which excludes existing but broken device entries.
+                // false true  true: finds broken entries, but even if powered off, so pairing attempts then crash.
+                // WORK-AROUND:
+                // Remove existing entries first, then find powered on entries.
+
+                var btIgnored = 0;
+
+                // Find remembered bluetooth devices.
+
+                echoServer.Log("Removing existing bluetooth devices...");
+                Console.WriteLine("Removing existing bluetooth devices...");
+
+                var btExistingList = btClient.DiscoverDevices(255, false, true, false);
+
+                foreach (var btItem in btExistingList)
+                {
+                    if (!btItem.DeviceName.Contains("Nintendo")) continue;
+
+                    BluetoothSecurity.RemoveDevice(btItem.DeviceAddress);
+                    btItem.SetServiceState(BluetoothService.HumanInterfaceDevice, false);
+                }
+
+                // Find unknown bluetooth devices.
+
+                echoServer.Log("Searching for bluetooth devices...");
+                Console.WriteLine("Searching for bluetooth devices...");
+
+                var btDiscoveredList = btClient.DiscoverDevices(255, false, false, true);
+
+                foreach (var btItem in btDiscoveredList)
+                {
+                    // Just in-case any non Wii devices are waiting to be paired.
+
+                    if (!btItem.DeviceName.Contains("Nintendo"))
+                    {
+                        btIgnored += 1;
+                        continue;
+                    }
+
+                    echoServer.Log("Adding: " + btItem.DeviceName + " ( " + btItem.DeviceAddress + " )");
+                    Console.WriteLine("Adding: " + btItem.DeviceName + " ( " + btItem.DeviceAddress + " )");
+
+                    // If interested in permanent sync look at WiiBalanceWalker code
+
+                    // Install as a HID device and allow some time for it to finish.
+
+                    btItem.SetServiceState(BluetoothService.HumanInterfaceDevice, true);
+                }
+
+                // Allow slow computers to finish installation before connecting.
+
+                System.Threading.Thread.Sleep(4000);
+
+                // Connect and send a command, otherwise they sleep and the device disappears.
+
+                try
+                {
+                    quickConnect();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                // Status report.
+
+                echoServer.Log("Finished - Found: " + btDiscoveredList.Length + " Ignored: " + btIgnored);
+                Console.WriteLine("Finished - Found: " + btDiscoveredList.Length + " Ignored: " + btIgnored);
+            }
+        }
+
+        static private void quickConnect()
+        {
+            //if (btDiscoveredList.Length > btIgnored)
+            //{
+            var deviceCollection = new WiimoteCollection();
+            deviceCollection.FindAllWiimotes();
+
+            if (deviceCollection.Count() == 0)
+            {
+                throw new Exception("No Wii devices found!");
+            }
+
+            foreach (var wiiDevice in deviceCollection)
+            {
+                wiiDevice.Connect();
+                wiiDevice.SetLEDs(true, false, false, false);
+                wiiDevice.Disconnect();
+                string wiiType = "";
+                switch (wiiDevice.WiimoteState.ExtensionType)
+                {
+                    case ExtensionType.None:
+                        wiiType = "WiiMote";
+                        break;
+                    case ExtensionType.BalanceBoard:
+                        wiiType = "Balance Board";
+                        break;
+                    default:
+                        wiiType = "Something else: " + wiiDevice.WiimoteState.ExtensionType;
+                        break;
+                }
+                echoServer.Log("Found " + wiiType);
+                Console.WriteLine("Found " + wiiType);
+            }
+            //}
+        }
+
+        static private string AddressToWiiPin(string bluetoothAddress)
+        {
+            if (bluetoothAddress.Length != 12) throw new Exception("Invalid Bluetooth Address: " + bluetoothAddress);
+
+            var bluetoothPin = "";
+            for (int i = bluetoothAddress.Length - 2; i >= 0; i -= 2)
+            {
+                string hex = bluetoothAddress.Substring(i, 2);
+                bluetoothPin += (char)Convert.ToInt32(hex, 16);
+            }
+            return bluetoothPin;
+        }
+
         static void Quit()
         {
             echoServer.Log("Quitting echo server");
-            Console.ReadKey();
-            Environment.Exit(0);
+            Console.WriteLine("Quitting echo server");
+            try
+            {
+                echoServer.StopTCP();
+            }
+            finally
+            {
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
         }
     }
 }

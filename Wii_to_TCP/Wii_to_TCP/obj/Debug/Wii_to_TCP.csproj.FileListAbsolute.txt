@@ -13,3 +13,11 @@ C:\Users\sacha\Documents\UPF\Wii_to_TCP\Wii_to_TCP\Wii_to_TCP\bin\Debug\Wii_to_T
 C:\Users\sacha\Documents\UPF\Wii_to_TCP\Wii_to_TCP\Wii_to_TCP\bin\Debug\Wii_to_TCP.pdb
 C:\Users\sacha\Documents\UPF\Wii_to_TCP\Wii_to_TCP\Wii_to_TCP\bin\Debug\InTheHand.Net.Personal.dll
 C:\Users\sacha\Documents\UPF\Wii_to_TCP\Wii_to_TCP\Wii_to_TCP\obj\Debug\Wii_to_TCP.csprojResolveAssemblyReference.cache
+C:\Users\sacha\Documents\Unity\WiiBerg\Wii_to_TCP\Wii_to_TCP\bin\Debug\Wii_to_TCP.exe.config
+C:\Users\sacha\Documents\Unity\WiiBerg\Wii_to_TCP\Wii_to_TCP\obj\Debug\Wii_to_TCP.exe
+C:\Users\sacha\Documents\Unity\WiiBerg\Wii_to_TCP\Wii_to_TCP\obj\Debug\Wii_to_TCP.pdb
+C:\Users\sacha\Documents\Unity\WiiBerg\Wii_to_TCP\Wii_to_TCP\bin\Debug\Wii_to_TCP.exe
+C:\Users\sacha\Documents\Unity\WiiBerg\Wii_to_TCP\Wii_to_TCP\bin\Debug\Wii_to_TCP.pdb
+C:\Users\sacha\Documents\Unity\WiiBerg\Wii_to_TCP\Wii_to_TCP\bin\Debug\InTheHand.Net.Personal.dll
+C:\Users\sacha\Documents\Unity\WiiBerg\Wii_to_TCP\Wii_to_TCP\obj\Debug\Wii_to_TCP.csprojResolveAssemblyReference.cache
+C:\Users\sacha\Documents\Unity\WiiBerg\Wii_to_TCP\Wii_to_TCP\obj\Debug\Wii_to_TCP.csproj.CoreCompileInputs.cache
