@@ -25,12 +25,7 @@ public class moveBall : MonoBehaviour {
     {
         if (getWiiInfo.gettingWiiData)
         {
-
-            float COGx = float.Parse(getWiiInfo.wbb_info["cogX"]);
-            float COGy = -float.Parse(getWiiInfo.wbb_info["cogY"]);
-
-
-            transform.position = new Vector3(COGx, 0, COGy);
+            transform.position = new Vector3(getWiiInfo.cogX, 0, getWiiInfo.cogY);
         }
     }
 }

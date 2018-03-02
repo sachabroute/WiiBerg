@@ -22,6 +22,7 @@ public class DetectFalls : MonoBehaviour {
     float cogY;
 	float cogXSum;
 	float cogYSum;
+    public static int fallDetected;
 
 
 	private void Start()
@@ -33,20 +34,17 @@ public class DetectFalls : MonoBehaviour {
 	{
 		if (getWiiInfo.gettingWiiData)
 		{
-			float weight = float.Parse(getWiiInfo.wbb_info["weight"]);
-			float cogX = float.Parse(getWiiInfo.wbb_info["cogX"]);
-			float cogY = float.Parse(getWiiInfo.wbb_info["cogY"]);
 
-			weightsList.Add (weight);
-			cogXList.Add (cogX);
-			cogYList.Add (cogY);
+			weightsList.Add (getWiiInfo.weight);
+			cogXList.Add (getWiiInfo.cogX);
+			cogYList.Add (getWiiInfo.cogY);
 
-			if (weightsList.Count > 50) 
+			if (weightsList.Count > 100) 
 			{
 				weightsList.RemoveAt(0);
 			}
 
-			if (cogXList.Count > 50) 
+			if (cogXList.Count > 100) 
 			{
 				cogXList.RemoveAt(0);
 				cogYList.RemoveAt(0);
@@ -85,8 +83,7 @@ public class DetectFalls : MonoBehaviour {
         {
 			fall = true;
 		}
-
+        fallDetected = 1;
 		return fall;
-
 	}
 }
