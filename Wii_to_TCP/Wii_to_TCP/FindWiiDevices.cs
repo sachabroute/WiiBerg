@@ -12,8 +12,23 @@ namespace Wii_to_TCP
 {
     static class FindBluetoothWii
     {
-        static public void WiiDeviceSearch(WiiEchoServer echoServer)
+
+        public static void WiiDeviceSearch(WiiEchoServer echoServer)
         {
+            try
+            {
+                quickConnect();
+
+                echoServer.Log("Devices already found and connected, skipping the pairing process");
+                Console.WriteLine("Devices already found and connected, skipping the pairing process");
+                return;
+            }
+            catch (Exception)
+            {
+                echoServer.Log("Devices not found, starting pairing process");
+                Console.WriteLine("Devices not found, starting pairing process");
+            }
+
             using (var btClient = new BluetoothClient())
             {
                 // PROBLEM:
@@ -27,23 +42,22 @@ namespace Wii_to_TCP
                 // Find remembered bluetooth devices.
 
                 echoServer.Log("Removing existing bluetooth devices...");
+                Console.WriteLine("Removing existing bluetooth devices...");
 
-                //if (checkBox_RemoveExisting.Checked)
-                //{
-                    var btExistingList = btClient.DiscoverDevices(255, false, true, false);
+                var btExistingList = btClient.DiscoverDevices(255, false, true, false);
 
-                    foreach (var btItem in btExistingList)
-                    {
-                        if (!btItem.DeviceName.Contains("Nintendo")) continue;
+                foreach (var btItem in btExistingList)
+                {
+                    if (!btItem.DeviceName.Contains("Nintendo")) continue;
 
-                        BluetoothSecurity.RemoveDevice(btItem.DeviceAddress);
-                        btItem.SetServiceState(BluetoothService.HumanInterfaceDevice, false);
-                    }
-                //}
+                    BluetoothSecurity.RemoveDevice(btItem.DeviceAddress);
+                    btItem.SetServiceState(BluetoothService.HumanInterfaceDevice, false);
+                }
 
                 // Find unknown bluetooth devices.
 
                 echoServer.Log("Searching for bluetooth devices...");
+                Console.WriteLine("Searching for bluetooth devices...");
 
                 var btDiscoveredList = btClient.DiscoverDevices(255, false, false, true);
 
@@ -58,23 +72,9 @@ namespace Wii_to_TCP
                     }
 
                     echoServer.Log("Adding: " + btItem.DeviceName + " ( " + btItem.DeviceAddress + " )");
+                    Console.WriteLine("Adding: " + btItem.DeviceName + " ( " + btItem.DeviceAddress + " )");
 
-                    // Send special pin for permanent sync.
-
-                    //if (checkBox_PermanentSync.Checked)
-                    //{
-                    //    // Sync button requires host address, holding 1+2 buttons requires device address.
-
-                    //    var btPin = AddressToWiiPin(BluetoothRadio.PrimaryRadio.LocalAddress.ToString());
-
-                    //    // Pin needs to be added before doing the pair request.
-
-                    //    new BluetoothWin32Authentication(btItem.DeviceAddress, btPin);
-
-                    //    // Null forces legacy pin request instead of SSP authentication.
-
-                    //    BluetoothSecurity.PairRequest(btItem.DeviceAddress, null);
-                    //}
+                    // If interested in permanent sync look at WiiBalanceWalker code
 
                     // Install as a HID device and allow some time for it to finish.
 
@@ -89,25 +89,39 @@ namespace Wii_to_TCP
 
                 try
                 {
-                    if (btDiscoveredList.Length > btIgnored)
-                    {
-                        var deviceCollection = new WiimoteCollection();
-                        deviceCollection.FindAllWiimotes();
-
-                        foreach (var wiiDevice in deviceCollection)
-                        {
-                            wiiDevice.Connect();
-                            wiiDevice.SetLEDs(true, false, false, false);
-                            wiiDevice.Disconnect();
-                        }
-                    }
+                    quickConnect();
                 }
-                catch (Exception ex) { echoServer.Log("Error!" + ex); }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
 
                 // Status report.
 
-                echoServer.Log("Finished - You can now close this window. Found: " + btDiscoveredList.Length + " Ignored: " + btIgnored);
+                echoServer.Log("Finished - Found: " + btDiscoveredList.Length + " Ignored: " + btIgnored);
+                Console.WriteLine("Finished - Found: " + btDiscoveredList.Length + " Ignored: " + btIgnored);
             }
+        }
+
+        static private void quickConnect()
+        {
+            //if (btDiscoveredList.Length > btIgnored)
+            //{
+            var deviceCollection = new WiimoteCollection();
+            deviceCollection.FindAllWiimotes();
+
+            if (deviceCollection.Count() == 0)
+            {
+                throw new Exception("No Wii devices found!");
+            }
+
+            foreach (var wiiDevice in deviceCollection)
+            {
+                wiiDevice.Connect();
+                wiiDevice.SetLEDs(true, false, false, false);
+                wiiDevice.Disconnect();
+            }
+            //}
         }
 
         static private string AddressToWiiPin(string bluetoothAddress)

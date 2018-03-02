@@ -95,7 +95,6 @@ public class getWiiInfo : MonoBehaviour {
     public void UpdateWiiData(String dataString)
     {
         String[] data = dataString.Split(';');
-
         wbb_info = data[0].Split('|').Select(p => p.Trim().Split(':')).ToDictionary(p => p[0], p => p[1]);
         wm_info = data[1].Split('|').Select(p => p.Trim().Split(':')).ToDictionary(p => p[0], p => p[1]);
 

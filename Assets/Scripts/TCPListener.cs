@@ -18,7 +18,6 @@ public class TCPListener : MonoBehaviour {
     public static String host = "localhost";
     public static Int32 port = 50000;
     private static Boolean socket_ready = false;
-    private static String input_buffer = "";
     private static TcpClient tcp_socket;
     private static NetworkStream net_stream;
     public static StreamWriter socket_writer;
@@ -38,14 +37,14 @@ public class TCPListener : MonoBehaviour {
     static void setupSocket()
     {
         UnityEngine.Debug.Log(Directory.GetCurrentDirectory());
-        try
-        {
-            Process wbb_tcp = new Process();
-            wbb_tcp.StartInfo.FileName = Directory.GetCurrentDirectory() + "/Wii_to_TCP/Wii_to_TCP/bin/Debug/Wii_to_TCP.exe";
-            wbb_tcp.Start();
+        //try
+        //{
+        //    Process wbb_tcp = new Process();
+        //    wbb_tcp.StartInfo.FileName = Directory.GetCurrentDirectory() + "/Wii_to_TCP/Wii_to_TCP/bin/Debug/Wii_to_TCP.exe";
+        //    wbb_tcp.Start();
 
-        }
-        catch (Exception ex) { UnityEngine.Debug.Log(ex); return; }
+        //}
+        //catch (Exception ex) { UnityEngine.Debug.Log(ex); return; }
 
         for (int i = 0; i < 10; i++)
         {

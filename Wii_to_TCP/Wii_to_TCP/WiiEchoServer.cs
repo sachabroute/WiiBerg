@@ -52,9 +52,10 @@ namespace Wii_to_TCP
             try
             {
                 writer.WriteLine("LOG_" + message);
-            } catch(Exception)
+            }
+            catch (System.ObjectDisposedException)
             {
-                throw;
+                this.StopTCP();
             }
         }
 
@@ -69,8 +70,10 @@ namespace Wii_to_TCP
             return reader.ReadLine();
         }
 
+
         public void WaitForRead()
         {
+            
             // check that message was received before sending another
             bool read = false;
             String message = "";
@@ -93,7 +96,6 @@ namespace Wii_to_TCP
         {
             client.Close();
             listener.Stop();
-            Environment.Exit(0);
         }
     }
 }
