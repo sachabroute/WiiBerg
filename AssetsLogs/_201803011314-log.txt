@@ -1,3 +1,0 @@
-#Starting log sesion
-cogX , cogY , weight, bl, br, tl, tr, falls
-#Ending log sesion

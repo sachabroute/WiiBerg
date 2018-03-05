@@ -15,7 +15,8 @@ using System.Diagnostics;
 using UnityEngine.SceneManagement;
 
 
-public class getWiiInfo : MonoBehaviour {
+public class BackToStart : MonoBehaviour
+{
 
     AppLog log;
 
@@ -39,7 +40,7 @@ public class getWiiInfo : MonoBehaviour {
     public static bool buttonA;
     public static bool buttonB;
 
-    
+
     // Use this for initialization
     void Awake()
     {
@@ -49,11 +50,11 @@ public class getWiiInfo : MonoBehaviour {
 
     }
 
-     void Start()
+    void Start()
     {
         //UnityEngine.Debug.Log("File initialize...");
         //log.LogMessage("This is the first file I've created");
-        
+
     }
 
     void FixedUpdate()
@@ -91,7 +92,7 @@ public class getWiiInfo : MonoBehaviour {
         closeLog();
     }
 
-    
+
 
     public void UpdateWiiData(String dataString)
     {
@@ -116,7 +117,7 @@ public class getWiiInfo : MonoBehaviour {
         accY = float.Parse(getWiiInfo.wm_info["accY"]);
         accZ = float.Parse(getWiiInfo.wm_info["accZ"]);
         buttonA = bool.Parse(getWiiInfo.wm_info["buttonA"]);
-        buttonB= bool.Parse(getWiiInfo.wm_info["buttonB"]);
+        buttonB = bool.Parse(getWiiInfo.wm_info["buttonB"]);
 
         //File is created as (timesteps, weight, cogX, cogY, bl, br, tl, tr, accX, accY, accZ, falls )
 
@@ -124,15 +125,16 @@ public class getWiiInfo : MonoBehaviour {
 
 
         //log.LogMessage(weight + "," + cogY + "," + cogX +"," + bl + "," + br + "," + tl + "," + tr + "," + accX + "," + accY + "," + accZ + "," +DetectFalls.fallDetected);
-        if(buttonA == true)
+        if (buttonA == true)
         {
-            SceneManager.LoadScene("StandingUnsupported");
+            SceneManager.LoadScene("Start");
             buttonA = false;
         }
 
 
-        
+
 
 
     }
 }
+
