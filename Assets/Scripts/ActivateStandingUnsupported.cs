@@ -124,7 +124,7 @@ public class ActivateStandingUnsupported : MonoBehaviour
 
 
 
-        log.LogMessage(weight + "," + cogY + "," + cogX +"," + bl + "," + br + "," + tl + "," + tr + "," + accX + "," + accY + "," + accZ + "," +DetectFalls.fallDetected);
+        //log.LogMessage(weight + "," + cogY + "," + cogX +"," + bl + "," + br + "," + tl + "," + tr + "," + accX + "," + accY + "," + accZ + "," +DetectFalls.fallDetected);
         if (buttonA == true)
         {
             SceneManager.LoadScene("StandingUnsupported2");
