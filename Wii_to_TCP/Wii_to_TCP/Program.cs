@@ -19,15 +19,9 @@ namespace Wii_to_TCP
         static Wiimote wm;
         static Wiimote wbb;
 
-        // we put initial values here so that it doesn't send an empty dictionary to unity
-        static IDictionary<String, String> wbb_info = new Dictionary<String, String>
-            {
-                {"button", "false" }
-            };
-        static IDictionary<String, String> wm_info = new Dictionary<String, String>
-            {
-                {"buttonA", "false" }
-            };
+        // we have to put all the initial values we will be using in unity otherwise error
+        static IDictionary<String, String> wbb_info = new Dictionary<String, String>();
+        static IDictionary<String, String> wm_info = new Dictionary<String, String>();
 
         static WiiEchoServer echoServer;
         static int port = 50000;
