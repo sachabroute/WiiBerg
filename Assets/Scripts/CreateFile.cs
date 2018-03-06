@@ -27,7 +27,7 @@ public class CreateFile : MonoBehaviour {
         //Initialize file
         user1 = user;
         log = new AppLog();
-        //log.LogMessage("Task,Timestamp, cogX , cogY , weight, bl, br, tl, tr, accX, accY, accZ, falls");
+        //log.LogMessage("Task,Timestamp, weight, cogX , cogY , bl, br, tl, tr, accX, accY, accZ, falls");
         
        
     }
@@ -47,9 +47,8 @@ public class CreateFile : MonoBehaviour {
 
         log.LogMessage(task + "," + Time.time + "," + getWiiInfo.weight + "," + getWiiInfo.cogX + "," + getWiiInfo.cogY + "," + getWiiInfo.bl + ","
             + getWiiInfo.br + "," + getWiiInfo.tl + "," + getWiiInfo.tr + "," + getWiiInfo.accX + "," + getWiiInfo.accY + ","
-            + getWiiInfo.accZ + "," + getWiiInfo.falls +"," + getWiiInfo.buttonA + "," + getWiiInfo.buttonB);
+            + getWiiInfo.accZ + "," + getWiiInfo.falls);
     }
-
     void OnApplicationQuit()
     {
         closeLog();
@@ -63,8 +62,8 @@ public class CreateFile : MonoBehaviour {
 
     public void OnDestroy()
     {
-        
-        log.Close();
+
+        closeLog();
         
     }
 }

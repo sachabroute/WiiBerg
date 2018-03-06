@@ -23,7 +23,7 @@ public class AppLog {
             Directory.CreateDirectory(Application.dataPath + "Logs/");
         }
         //string path = Application.dataPath + "Logs/" + "_" + DateTime.Now.ToString("yyyMMddHHmm") + "-log.txt";
-        string path = Application.dataPath + "Logs/" + "_" + DateTime.Now.ToString("yyyMMdd") + "_" + CreateFile.user1 + "-log.txt";
+        string path = Application.dataPath + "Logs/" + "_" + DateTime.Now.ToString("yyyMMdd") + "_" + CreateLogFile.user1 + "-log.txt";
         //string path = Application.dataPath + "Logs/"; // + "_" +DateTime.Now.ToString ("yyyMMddHHmm") + "-log.txt";		
         UnityEngine.Debug.Log(path);
         logFile = new System.IO.StreamWriter(path, true);
