@@ -849,9 +849,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2144495651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dbdb1a4cff0940cc9ef0c1f05f44d2f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a43a20280c960243815eb7234747115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextScene: PickUpObject2
 --- !u!4 &2144495653
 Transform:
   m_ObjectHideFlags: 0

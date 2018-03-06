@@ -40,6 +40,8 @@ public class BackToStart : MonoBehaviour
     public static bool buttonA;
     public static bool buttonB;
 
+    private bool lastButtonA;
+
 
     // Use this for initialization
     void Awake()
@@ -125,11 +127,17 @@ public class BackToStart : MonoBehaviour
 
 
         //log.LogMessage(weight + "," + cogY + "," + cogX +"," + bl + "," + br + "," + tl + "," + tr + "," + accX + "," + accY + "," + accZ + "," +DetectFalls.fallDetected);
-        if (buttonA == true)
+        if (buttonA == true && lastButtonA == false)
         {
             SceneManager.LoadScene("Start");
-            buttonA = false;
+       
+            UnityEngine.Debug.Log("BUttonA : " + buttonA);
+            UnityEngine.Debug.Log("lastBUttonA : " + lastButtonA);
+            lastButtonA = buttonA;
         }
+
+        lastButtonA = buttonA; 
+        
 
 
 

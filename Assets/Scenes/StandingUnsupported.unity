@@ -445,9 +445,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 733372685}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a431c3578ced47feaa02b5957e69535, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a43a20280c960243815eb7234747115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextScene: StandingUnsupported2
 --- !u!4 &733372687
 Transform:
   m_ObjectHideFlags: 0
@@ -779,7 +780,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1170115001}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a431c3578ced47feaa02b5957e69535, type: 3}
   m_Name: 

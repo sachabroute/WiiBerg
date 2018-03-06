@@ -17,7 +17,7 @@ using UnityEngine.SceneManagement;
 
 public class getWiiInfo : MonoBehaviour {
 
-    AppLog log;
+    //AppLog log;
 
     public static bool gettingWiiData = false;
     public static IDictionary<String, String> wbb_info = new Dictionary<String, String>();
@@ -38,6 +38,11 @@ public class getWiiInfo : MonoBehaviour {
     public static float accZ;//" " Z
     public static bool buttonA;
     public static bool buttonB;
+    public static int falls;
+
+    public string nextScene = "insert scene name here"; //Next Scene to Load    
+
+    private bool lastButtonA = true;
 
     
     // Use this for initialization
@@ -83,7 +88,7 @@ public class getWiiInfo : MonoBehaviour {
 
     public void closeLog()
     {
-        log.Close();
+        //log.Close();
     }
 
     void OnApplicationQuit()
@@ -91,7 +96,12 @@ public class getWiiInfo : MonoBehaviour {
         closeLog();
     }
 
-    
+    private void OnDestroy()
+    {
+       closeLog();
+    }
+
+
 
     public void UpdateWiiData(String dataString)
     {
@@ -124,14 +134,30 @@ public class getWiiInfo : MonoBehaviour {
 
 
         //log.LogMessage(weight + "," + cogY + "," + cogX +"," + bl + "," + br + "," + tl + "," + tr + "," + accX + "," + accY + "," + accZ + "," +DetectFalls.fallDetected);
-        if(buttonA == true)
+        if(buttonA == true && lastButtonA == false)
         {
-            SceneManager.LoadScene("StandingUnsupported");
-            buttonA = false;
+
+            
+            UnityEngine.Debug.Log("ButtonA : " + buttonA);
+            //  lastButtonA = buttonA;
+            UnityEngine.Debug.Log("lastButtonA : " + lastButtonA);
+            SceneManager.LoadScene(nextScene);
+            // lastButtonA1 = buttonA1;
+           
+     
+            closeLog();
+
+
         }
 
+        UnityEngine.Debug.Log("BUttonA : " + buttonA);
+        lastButtonA = buttonA;
+        UnityEngine.Debug.Log("lastBUttonA : " + lastButtonA);
 
-        
+        //UnityEngine.Debug.Log("lastBUttonA : " + lastButtonA);
+
+
+
 
 
     }

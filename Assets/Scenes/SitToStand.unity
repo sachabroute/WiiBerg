@@ -137,9 +137,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 80295584}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 653773571cb1e4f28b6ee44562f7f7b4, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a43a20280c960243815eb7234747115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextScene: SitToStand2
 --- !u!4 &80295586
 Transform:
   m_ObjectHideFlags: 0

@@ -1012,6 +1012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a43a20280c960243815eb7234747115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextScene: StandingUnsupported
 --- !u!4 &1869052981
 Transform:
   m_ObjectHideFlags: 0
